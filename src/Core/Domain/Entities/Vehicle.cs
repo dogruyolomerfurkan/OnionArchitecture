@@ -5,7 +5,7 @@ namespace Domain.Entities;
 public class Vehicle : BaseEntity
 {
     public string? Description { get; set; }
-    public float? Kilometer { get; set; }
+    public string? Kilometer { get; set; }
     public string? Year { get; set; }
     public int FuelTypeId { get; set; }
     public FuelType? FuelType { get; set; }

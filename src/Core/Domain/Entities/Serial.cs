@@ -8,7 +8,7 @@ namespace Domain.Entities;
 public class Serial : BaseEntity
 {
     public string? Name { get; set; }
-    public int BrandId { get; set; }
-    public Brand? Brand { get; set; }
+    public int BrandVehicleCategoryId { get; set; }
+    public BrandVehicleCategory? BrandVehicleCategory { get; set; }
     public ICollection<Model>? Models { get; set; }
 }

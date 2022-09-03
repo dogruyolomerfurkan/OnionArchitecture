@@ -7,12 +7,18 @@ namespace Persistence.Contexts;
 public class RentalDbContext : DbContext
 {
     public RentalDbContext(DbContextOptions options) : base(options) { }
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    base.OnConfiguring(optionsBuilder);
+    //    optionsBuilder.UseNpgsql("Host=localhost;Database=CarRentalDB;Username=admin;Password=19961996");
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
     public DbSet<Brand>? Brands { get; set; }
+    public DbSet<BrandVehicleCategory>? BrandVehicleCategories { get; set; }
     public DbSet<FuelType>? FuelTypes { get; set; }
     public DbSet<GearType>? GearTypes { get; set; }
     public DbSet<Model>? Models { get; set; }

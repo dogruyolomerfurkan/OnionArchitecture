@@ -22,6 +22,21 @@ namespace Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BrandVehicleCategory", b =>
+                {
+                    b.Property<int>("BrandsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VehicleCategoriesId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BrandsId", "VehicleCategoriesId");
+
+                    b.HasIndex("VehicleCategoriesId");
+
+                    b.ToTable("BrandVehicleCategory");
+                });
+
             modelBuilder.Entity("Domain.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -44,14 +59,41 @@ namespace Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BrandVehicleCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("VehicleCategoryId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("VehicleCategoryId");
 
-                    b.ToTable("Brands");
+                    b.ToTable("BrandVehicleCategories");
                 });
 
             modelBuilder.Entity("Domain.Entities.FuelType", b =>
@@ -148,7 +190,10 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BrandVehicleCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
@@ -168,6 +213,8 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("BrandVehicleCategoryId");
 
                     b.ToTable("Serials");
                 });
@@ -251,13 +298,38 @@ namespace Persistence.Migrations
                     b.ToTable("VehicleCategories");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Brand", b =>
+            modelBuilder.Entity("BrandVehicleCategory", b =>
                 {
+                    b.HasOne("Domain.Entities.Brand", null)
+                        .WithMany()
+                        .HasForeignKey("BrandsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.VehicleCategory", null)
-                        .WithMany("Brands")
+                        .WithMany()
+                        .HasForeignKey("VehicleCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.BrandVehicleCategory", b =>
+                {
+                    b.HasOne("Domain.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.VehicleCategory", "VehicleCategory")
+                        .WithMany()
                         .HasForeignKey("VehicleCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("VehicleCategory");
                 });
 
             modelBuilder.Entity("Domain.Entities.Model", b =>
@@ -271,13 +343,17 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Serial", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
+                    b.HasOne("Domain.Entities.Brand", null)
                         .WithMany("Serials")
-                        .HasForeignKey("BrandId")
+                        .HasForeignKey("BrandId");
+
+                    b.HasOne("Domain.Entities.BrandVehicleCategory", "BrandVehicleCategory")
+                        .WithMany()
+                        .HasForeignKey("BrandVehicleCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
+                    b.Navigation("BrandVehicleCategory");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>
@@ -325,11 +401,6 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Serial", b =>
                 {
                     b.Navigation("Models");
-                });
-
-            modelBuilder.Entity("Domain.Entities.VehicleCategory", b =>
-                {
-                    b.Navigation("Brands");
                 });
 #pragma warning restore 612, 618
         }

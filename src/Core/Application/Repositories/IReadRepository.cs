@@ -8,7 +8,7 @@ public interface IReadRepository<T> : IRepository<T> where T : BaseEntity, new()
     /// <summary>
     ///     Returns Queryable result which is evaluate later, adds filtering if its needed
     /// </summary>
-    IQueryable<T> Get(Expression<Func<T, bool>>? filter, bool tracking = true);
+    IQueryable<T> Get(Expression<Func<T, bool>> filter, bool tracking = true);
 
     /// <summary>
     ///     Get item from database, add includes if its needed

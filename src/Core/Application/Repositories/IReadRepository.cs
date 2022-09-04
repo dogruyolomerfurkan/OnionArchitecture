@@ -14,5 +14,4 @@ public interface IReadRepository<T> : IRepository<T> where T : BaseEntity, new()
     ///     Get item from database, add includes if its needed
     /// </summary>
     Task<T> GetByIdAsync(int id, bool tracking = true, params Expression<Func<T, object>>[] includes);
-
 }

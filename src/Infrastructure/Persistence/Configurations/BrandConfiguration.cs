@@ -10,5 +10,7 @@ public class BrandConfiguration : BaseConfiguration<Brand>
     {
         base.Configure(builder);
         builder.Property(p => p.Name).HasMaxLength(100).IsRequired();
+
+        builder.HasData(new Brand { Id = 1, Name = "Toyota", IsDeleted = false });
     }
 }

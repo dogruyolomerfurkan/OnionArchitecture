@@ -11,7 +11,7 @@ public static class ServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<RentalDbContext>(options => options.UseNpgsql(configuration.GetValue<string>("PostgreSQL")));
+        services.AddDbContext<RentalDbContext>(options => options.UseSqlServer(configuration.GetValue<string>("SqlServer")));
         services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
     }

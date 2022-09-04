@@ -10,6 +10,8 @@ public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity, new(
     private readonly DbSet<T> _entity;
     private readonly RentalDbContext _dbContext;
 
+    public DbSet<T> Entity => _entity;
+
     public WriteRepository(RentalDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -52,7 +54,7 @@ public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity, new(
 
     public async Task<int> SaveAsync()
     {
-        
+
         return await _dbContext.SaveChangesAsync();
     }
 }

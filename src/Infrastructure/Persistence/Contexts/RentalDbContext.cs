@@ -7,11 +7,6 @@ namespace Persistence.Contexts;
 public class RentalDbContext : DbContext
 {
     public RentalDbContext(DbContextOptions options) : base(options) { }
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    base.OnConfiguring(optionsBuilder);
-    //    optionsBuilder.UseNpgsql("Host=localhost;Database=CarRentalDB;Username=admin;Password=19961996");
-    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

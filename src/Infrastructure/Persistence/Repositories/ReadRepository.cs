@@ -15,6 +15,8 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity, new()
         _entity = dbContext.Set<T>();
     }
 
+    public DbSet<T> Entity => _entity;
+
     public IQueryable<T> Get(Expression<Func<T, bool>> filter, bool tracking = true)
     {
         IQueryable<T> query = _entity.Where(filter).AsQueryable();

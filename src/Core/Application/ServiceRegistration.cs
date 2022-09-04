@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Features.Brands.Rules;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddScoped<BrandBusinessRules>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 using System.Net;
 
 namespace CrossCuttingConcerns.Exceptions;
@@ -30,6 +31,7 @@ public class ExceptionMiddleware
         context.Response.ContentType = "application/json";
 
         if (exception.GetType() == typeof(BusinessException)) return CreateBusinessException(context, exception);
+        if (exception.GetType() == typeof(ValidationException)) return CreateValidationException(context, exception);
         return CreateInternalException(context, exception);
     }
 
@@ -44,7 +46,19 @@ public class ExceptionMiddleware
             Detail = exception.Message
         }.ToString());
     }
+    private static Task CreateValidationException(HttpContext context, Exception exception)
+    {
+        context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+        object errors = ((ValidationException)exception).Errors;
 
+        return context.Response.WriteAsync(new ValidationProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Type = "Validation",
+            Title = "Validation Error(s)",
+            Errors = errors
+        }.ToString());
+    }
     private static Task CreateInternalException(HttpContext context, Exception exception)
     {
         context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);

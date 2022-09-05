@@ -21,8 +21,5 @@ namespace WebAPI.Controllers
             var response = await _mediator.Send(createBrandRequest);
             return Ok(response);
         }
-
-
-
     }
 }
